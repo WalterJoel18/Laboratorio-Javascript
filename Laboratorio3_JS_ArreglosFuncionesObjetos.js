@@ -145,15 +145,18 @@ try {
 
 /* ---------------- PARTE 3: OBJETOS ---------------- */
 
+// 3.1 Modelando una entidad
 const producto = {
   nombre: "Teclado mecánico",
   precio: 45,
   stock: 12,
   aplicarDescuento(porcentaje) {
     // TODO: devolver el precio con descuento, sin modificar this.precio
+    return this.precio - (this.precio * (porcentaje / 100));
   },
 };
 
+// 3.2 Arreglos de objetos
 const catalogo = [
   { nombre: "Teclado", precio: 45, categoria: "periféricos", stock: 12 },
   { nombre: "Monitor", precio: 180, categoria: "pantallas", stock: 5 },
@@ -163,19 +166,68 @@ const catalogo = [
 
 function productosDisponibles(catalogo) {
   // TODO
-}
-
-function nombresPorCategoria(catalogo, categoria) {
-  // TODO: usar desestructuración en el callback
+  return catalogo.filter((item) => item.stock > 0);
 }
 
 function valorTotalInventario(catalogo) {
   // TODO: usar reduce
+  return catalogo.reduce((total, item) => total + item.precio * item.stock, 0);
 }
 
 function productoMasCaro(catalogo) {
   // TODO
+  return catalogo.reduce((max, item) => (item.precio > max.precio ? item : max));
 }
+
+// 3.3 Desestructuración (destructuring)
+function nombresPorCategoria(catalogo, categoria) {
+  // TODO: usar desestructuración en el callback
+  return catalogo
+    .filter(({ categoria: cat }) => cat === categoria)
+    .map(({ nombre }) => nombre);
+}
+
+/*
+Comentario 3.3: 
+La desestructuración hace el código más legible porque extrae directamente las 
+propiedades que la función necesita ({ categoria: cat }, { nombre }) en los parámetros, 
+eliminando la repetición de "item.categoria" o "item.nombre", dejando claro a primera vista 
+la forma del objeto que se espera y reduciendo el ruido visual.
+*/
+
+console.log("\nParte 3 \n");
+
+/*Prints de la tercera parte*/
+console.log(
+  "3.1 aplicarDescuento: \n",
+  producto.aplicarDescuento(10),
+);
+
+console.log(
+  "3.1 precio original: \n",
+  producto.precio,
+);
+
+console.log(
+  "3.2 productosDisponibles: \n",
+  productosDisponibles(catalogo),
+);
+
+console.log(
+  "3.2 valorTotalInventario: \n",
+  valorTotalInventario(catalogo),
+);
+
+console.log(
+  "3.2 productoMasCaro: \n",
+  productoMasCaro(catalogo),
+);
+
+console.log(
+  "3.3 nombresPorCategoria (con desestructuración): \n",
+  nombresPorCategoria(catalogo, "periféricos"),
+);
+
 
 /* ---------------- PARTE 4: RETO INTEGRADOR ---------------- */
 
@@ -189,7 +241,41 @@ const ventas = [
 
 function generarReporte(ventas) {
   // TODO: devolver el objeto reporte descrito en la guía
+  const totalVendido = ventas.reduce(
+    (total, v) => total + v.cantidad * v.precioUnitario,
+    0,
+  );
+
+  const numeroTransacciones = ventas.length;
+
+  const agrupado = ventas.reduce((acc, v) => {
+    if (!acc[v.producto]) {
+      acc[v.producto] = {
+        producto: v.producto,
+        cantidadTotal: 0,
+        ingresoTotal: 0,
+      };
+    }
+    acc[v.producto].cantidadTotal += v.cantidad;
+    acc[v.producto].ingresoTotal += v.cantidad * v.precioUnitario;
+    return acc;
+  }, {});
+
+  const resumenPorProducto = Object.values(agrupado);
+
+  const productoTop = [...resumenPorProducto].sort(
+    (a, b) => b.cantidadTotal - a.cantidadTotal,
+  )[0];
+
+  return {
+    totalVendido,
+    numeroTransacciones,
+    productoTopVentas: productoTop.producto,
+    resumenPorProducto,
+  };
 }
 
+console.log("\nParte 4 \n");
+
 // Descomenta para probar cuando termines:
-// console.log(JSON.stringify(generarReporte(ventas), null, 2));
+console.log(JSON.stringify(generarReporte(ventas), null, 2));
