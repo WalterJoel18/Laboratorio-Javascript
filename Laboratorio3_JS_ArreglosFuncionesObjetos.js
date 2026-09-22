@@ -279,3 +279,28 @@ console.log("\nParte 4 \n");
 
 // Descomenta para probar cuando termines:
 console.log(JSON.stringify(generarReporte(ventas), null, 2));
+
+/* ===========================================================
+   RESPUESTAS A LAS PREGUNTAS DE CIERRE 
+   ===========================================================
+
+1. ¿Qué diferencia hay entre map y forEach? ¿Cuándo usarías cada uno?
+   - map: Transforma los elementos y devuelve un nuevo arreglo sin modificar el original. 
+     Úsalo cuando necesites obtener una lista transformada.
+   - forEach: Ejecuta una función por cada elemento pero devuelve undefined. 
+     Úsalo solo para acciones secundarias (como imprimir en consola o modificar variables externas).
+
+2. ¿Por qué reduce se considera el método "más general" entre los métodos de arreglos vistos?
+   Porque permite condensar un arreglo en cualquier tipo de dato (un número total, un objeto, 
+   un string o incluso otro arreglo). Es tan versátil que otros métodos como map o filter 
+   pueden recrearse usando solo reduce.
+
+3. Da un ejemplo real (fuera de este laboratorio) donde modelarías datos como un arreglo de objetos.
+   Un carrito de compras de una tienda online: el carrito es el arreglo y cada elemento es un 
+   objeto que representa un producto con datos como id, nombre, precio, cantidad y talla.
+
+4. ¿Qué ventaja tiene evitar mutar arreglos y objetos directamente?
+   Garantiza un código predecible y fácil de depurar, previniendo fallos inesperados al evitar 
+   que una función modifique datos que se usan en otra parte. Además, es esencial en la 
+   programación funcional y en frameworks como React para manejar estados de forma limpia.
+=========================================================== */
